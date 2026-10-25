@@ -427,7 +427,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="trades-list" id="tradeList">
       <div style="color:var(--text2);text-align:center;padding:20px;font-size:11px;letter-spacing:1px">SIN OPERACIONES</div>
     </div>
-    <div class="sec-hdr">LOG</div>
+    <div class="sec-hdr" style="display:flex;justify-content:space-between;align-items:center;">
+      <span>LOG</span>
+      <button onclick="copyLog()" style="background:rgba(0,170,255,.1);border:1px solid var(--b1);color:var(--b1);padding:2px 8px;border-radius:4px;font-family:inherit;font-size:9px;cursor:pointer;letter-spacing:1px;">📋 COPIAR</button>
+    </div>
     <div class="log-wrap" id="logWrap"></div>
   </div>
 </div>
@@ -1373,7 +1376,27 @@ function updateP(p){
   if(S.prevP)document.getElementById('tSpread').textContent=Math.abs(d).toFixed(2);
 }
 function setConn(st,txt){const d=document.getElementById('dot');d.className=`dot${st==='on'?' on':st==='ing'?' ing':''}`;document.getElementById('connTxt').textContent=txt;}
-function log(msg,type='info'){const el=document.createElement('div');el.className=`log-line ${type}`;el.textContent=`[${new Date().toLocaleTimeString('es-CO')}] ${msg}`;const w=document.getElementById('logWrap');w.insertBefore(el,w.firstChild);if(w.children.length>80)w.removeChild(w.lastChild);}
+const LOG_HISTORY=[];
+function log(msg,type='info'){
+  const ts=new Date().toLocaleTimeString('es-CO');
+  const el=document.createElement('div');el.className=`log-line ${type}`;
+  el.textContent=`[${ts}] ${msg}`;
+  const w=document.getElementById('logWrap');
+  w.insertBefore(el,w.firstChild);
+  if(w.children.length>80)w.removeChild(w.lastChild);
+  LOG_HISTORY.unshift({ts,msg,type});
+  if(LOG_HISTORY.length>200)LOG_HISTORY.pop();
+}
+function copyLog(){
+  const txt=LOG_HISTORY.map(e=>`[${e.ts}][${e.type.toUpperCase()}] ${e.msg}`).join('\n');
+  const stats=`=== DERIVBOT TITAN47 LOG ===\nFecha: ${new Date().toLocaleString('es-CO')}\nBalance: ${S.balance} ${S.currency}\nOperaciones: W${S.wins} L${S.losses}\nP&L: $${S.pnl.toFixed(2)}\n===========================\n\n`;
+  navigator.clipboard.writeText(stats+txt).then(()=>{
+    const btn=event.target;btn.textContent='✓ COPIADO';setTimeout(()=>btn.textContent='📋 COPIAR',2000);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=stats+txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+    const btn=event.target;btn.textContent='✓ COPIADO';setTimeout(()=>btn.textContent='📋 COPIAR',2000);
+  });
+}
 function notify(msg,type='info'){const stack=document.getElementById('notifStack');const el=document.createElement('div');el.className=`notif ${type}`;el.textContent=msg;stack.appendChild(el);setTimeout(()=>el.remove(),3500);if(stack.children.length>4)stack.removeChild(stack.firstChild);}
 function addTradeUI(tr){const list=document.getElementById('tradeList');if(list.querySelector(':not(.ti)'))list.innerHTML='';const el=document.createElement('div');el.className='ti open';el.id=`t_${tr.id}`;el.innerHTML=`<div class="td ${tr.dir.toLowerCase()}">${tr.dir==='CALL'?'▲':'▼'}</div><div class="ti-info">${tr.price.toFixed(2)}<br>${tr.time}·$${tr.stake}</div><div class="tr open" id="tr_${tr.id}">···</div>`;list.insertBefore(el,list.firstChild);}
 function upTradeUI(tr,profit,win){const el=document.getElementById(`t_${tr.id}`);if(!el)return;el.className=`ti ${win?'win':'loss'}`;const r=document.getElementById(`tr_${tr.id}`);if(r){r.className=`tr ${win?'win':'loss'}`;r.textContent=(profit>=0?'+':'')+profit.toFixed(2);}}
