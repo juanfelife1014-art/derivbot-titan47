@@ -104,7 +104,7 @@ async function getWsUrl() {
 
   // Step 1: GET accounts
   const accounts = await apiRequest({
-    hostname: 'api.derivws.com', path: '/accounts', method: 'GET', headers,
+    hostname: 'api.derivws.com', path: '/trading/v1/accounts', method: 'GET', headers,
   });
 
   if (!Array.isArray(accounts) || !accounts.length) throw new Error(`Bad accounts: ${JSON.stringify(accounts)}`);
@@ -113,7 +113,7 @@ async function getWsUrl() {
 
   // Step 2: POST OTP
   const otpResp = await apiRequest({
-    hostname: 'api.derivws.com', path: `/accounts/${accountId}/otp`, method: 'POST',
+    hostname: 'api.derivws.com', path: `/trading/v1/accounts/${accountId}/otp`, method: 'POST',
     headers: { ...headers, 'Content-Length': 0 },
   });
 
