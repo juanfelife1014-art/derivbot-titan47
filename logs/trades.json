@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-25T17:08:12.678Z",
+  "updated": "2026-10-25T17:08:22.586Z",
   "balance": 0,
   "currency": "USD",
   "wins": 0,
@@ -7,117 +7,97 @@
   "pnl": 0,
   "logs": [
     {
-      "ts": "2026-10-25T17:07:59.235Z",
+      "ts": "2026-10-25T17:08:09.455Z",
       "msg": "WS closed (1006), reconnecting in 15s...",
       "type": "warn"
     },
     {
-      "ts": "2026-10-25T17:07:59.235Z",
+      "ts": "2026-10-25T17:08:09.455Z",
       "msg": "WS error: Unexpected server response: 520",
       "type": "error"
     },
     {
-      "ts": "2026-10-25T17:07:53.916Z",
+      "ts": "2026-10-25T17:08:04.123Z",
       "msg": "Connecting to Deriv WS: wss://ws.derivws.com/websockets/v3?app_id=34EVWNMv7KoS85SXXkkSR",
       "type": "info"
     },
     {
-      "ts": "2026-10-25T17:07:53.695Z",
-      "msg": "Logs → GitHub OK",
-      "type": "info"
-    },
-    {
-      "ts": "2026-10-25T17:07:38.915Z",
+      "ts": "2026-10-25T17:07:49.120Z",
       "msg": "WS closed (1006), reconnecting in 15s...",
       "type": "warn"
     },
     {
-      "ts": "2026-10-25T17:07:38.915Z",
+      "ts": "2026-10-25T17:07:49.120Z",
       "msg": "WS error: Unexpected server response: 520",
       "type": "error"
     },
     {
-      "ts": "2026-10-25T17:07:33.597Z",
+      "ts": "2026-10-25T17:07:43.761Z",
       "msg": "Connecting to Deriv WS: wss://ws.derivws.com/websockets/v3?app_id=34EVWNMv7KoS85SXXkkSR",
       "type": "info"
     },
     {
-      "ts": "2026-10-25T17:07:18.596Z",
+      "ts": "2026-10-25T17:07:28.761Z",
       "msg": "WS closed (1006), reconnecting in 15s...",
       "type": "warn"
     },
     {
-      "ts": "2026-10-25T17:07:18.596Z",
+      "ts": "2026-10-25T17:07:28.761Z",
       "msg": "WS error: Unexpected server response: 520",
       "type": "error"
     },
     {
-      "ts": "2026-10-25T17:07:13.420Z",
+      "ts": "2026-10-25T17:07:23.429Z",
       "msg": "Connecting to Deriv WS: wss://ws.derivws.com/websockets/v3?app_id=34EVWNMv7KoS85SXXkkSR",
       "type": "info"
     },
     {
-      "ts": "2026-10-25T17:06:58.419Z",
+      "ts": "2026-10-25T17:07:08.429Z",
       "msg": "WS closed (1006), reconnecting in 15s...",
       "type": "warn"
     },
     {
-      "ts": "2026-10-25T17:06:58.419Z",
+      "ts": "2026-10-25T17:07:08.429Z",
       "msg": "WS error: Unexpected server response: 520",
       "type": "error"
     },
     {
-      "ts": "2026-10-25T17:06:53.119Z",
+      "ts": "2026-10-25T17:07:03.109Z",
       "msg": "Connecting to Deriv WS: wss://ws.derivws.com/websockets/v3?app_id=34EVWNMv7KoS85SXXkkSR",
       "type": "info"
     },
     {
-      "ts": "2026-10-25T17:06:38.119Z",
+      "ts": "2026-10-25T17:06:48.109Z",
       "msg": "WS closed (1006), reconnecting in 15s...",
       "type": "warn"
     },
     {
-      "ts": "2026-10-25T17:06:38.118Z",
+      "ts": "2026-10-25T17:06:48.109Z",
       "msg": "WS error: Unexpected server response: 520",
       "type": "error"
     },
     {
-      "ts": "2026-10-25T17:06:32.814Z",
+      "ts": "2026-10-25T17:06:42.780Z",
       "msg": "Connecting to Deriv WS: wss://ws.derivws.com/websockets/v3?app_id=34EVWNMv7KoS85SXXkkSR",
       "type": "info"
     },
     {
-      "ts": "2026-10-25T17:06:17.810Z",
+      "ts": "2026-10-25T17:06:27.780Z",
       "msg": "WS closed (1006), reconnecting in 15s...",
       "type": "warn"
     },
     {
-      "ts": "2026-10-25T17:06:17.810Z",
+      "ts": "2026-10-25T17:06:27.733Z",
       "msg": "WS error: Unexpected server response: 520",
       "type": "error"
     },
     {
-      "ts": "2026-10-25T17:06:12.675Z",
-      "msg": "Connecting to Deriv WS: wss://ws.derivws.com/websockets/v3?app_id=34EVWNMv7KoS85SXXkkSR",
-      "type": "info"
-    },
-    {
-      "ts": "2026-10-25T17:05:57.671Z",
-      "msg": "WS closed (1006), reconnecting in 15s...",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-25T17:05:57.671Z",
-      "msg": "WS error: Unexpected server response: 520",
-      "type": "error"
-    },
-    {
-      "ts": "2026-10-25T17:05:52.330Z",
+      "ts": "2026-10-25T17:06:22.586Z",
       "msg": "HTTP server on port 10000",
       "type": "info"
     },
     {
-      "ts": "2026-10-25T17:05:52.317Z",
+      "ts": "2026-10-25T17:06:22.510Z",
       "msg": "Connecting to Deriv WS: wss://ws.derivws.com/websockets/v3?app_id=34EVWNMv7KoS85SXXkkSR",
       "type": "info"
     }
