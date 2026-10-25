@@ -3,7 +3,7 @@ const http = require('http');
 const { WebSocket } = require('ws');
 
 const CONFIG = {
-  appId: process.env.DERIV_APP_ID,
+  appId: process.env.DERIV_APP_ID || '1089',
   token: process.env.DERIV_TOKEN,
   githubToken: process.env.GITHUB_TOKEN,
   githubRepo: 'juanfelife1014-art/derivbot-titan47',
@@ -77,56 +77,11 @@ function pushLogsToGitHub() {
   getReq.end();
 }
 
-function apiRequest(opts, postData) {
-  return new Promise((resolve, reject) => {
-    const req = https.request(opts, (res) => {
-      let body = '';
-      res.on('data', d => body += d);
-      res.on('end', () => {
-        log(`API ${opts.path} status:${res.statusCode} body:${body.slice(0,200)}`);
-        try { resolve(JSON.parse(body)); }
-        catch(e) { reject(new Error(`JSON parse fail: ${body.slice(0,100)}`)); }
-      });
-    });
-    req.on('error', reject);
-    if (postData) req.write(postData);
-    req.end();
-  });
-}
-
-async function getWsUrl() {
-  const headers = {
-    'Authorization': `Bearer ${CONFIG.token}`,
-    'X-App-ID': CONFIG.appId,
-    'Accept': 'application/json',
-    'User-Agent': 'DerivBot-Titan47',
-  };
-
-  // Step 1: GET accounts
-  const accounts = await apiRequest({
-    hostname: 'api.derivws.com', path: '/trading/v1/accounts', method: 'GET', headers,
-  });
-
-  if (!Array.isArray(accounts) || !accounts.length) throw new Error(`Bad accounts: ${JSON.stringify(accounts)}`);
-  const accountId = accounts[0].id;
-  log(`Account: ${accountId}`);
-
-  // Step 2: POST OTP
-  const otpResp = await apiRequest({
-    hostname: 'api.derivws.com', path: `/trading/v1/accounts/${accountId}/otp`, method: 'POST',
-    headers: { ...headers, 'Content-Length': 0 },
-  });
-
-  if (!otpResp.ws_url) throw new Error(`No ws_url in OTP response: ${JSON.stringify(otpResp)}`);
-  log(`WS URL: ${otpResp.ws_url}`);
-  return otpResp.ws_url;
-}
-
 function ema(arr, period) {
   if (arr.length < period) return null;
   const k = 2 / (period + 1);
-  let val = arr.slice(-period).reduce((a, b) => a + b, 0) / period;
-  for (let i = arr.length - period + 1; i < arr.length; i++) val = arr[i] * k + val * (1 - k);
+  let val = arr.slice(0, period).reduce((a, b) => a + b, 0) / period;
+  for (let i = period; i < arr.length; i++) val = arr[i] * k + val * (1 - k);
   return val;
 }
 
@@ -158,23 +113,32 @@ function getSignal() {
   return null;
 }
 
-function startBot(wsUrl) {
-  log(`Connecting WS: ${wsUrl}`);
+function startBot() {
+  const wsUrl = `wss://ws.binaryws.com/websockets/v3?app_id=${CONFIG.appId}`;
+  log(`Connecting to Deriv WS: ${wsUrl}`);
   const ws = new WebSocket(wsUrl);
 
   ws.on('open', () => {
-    log('WS connected ✓');
-    ws.send(JSON.stringify({ ticks_history: CONFIG.symbol, end: 'latest', count: 100, style: 'candles', granularity: 60 }));
-    ws.send(JSON.stringify({ balance: 1, subscribe: 1 }));
+    log('WS connected ✓ — authorizing...');
+    ws.send(JSON.stringify({ authorize: CONFIG.token }));
   });
 
   ws.on('message', (data) => {
     const msg = JSON.parse(data);
     if (msg.error) { log(`API error: ${msg.error.message}`, 'error'); return; }
 
+    if (msg.msg_type === 'authorize') {
+      log(`Authorized ✓ account: ${msg.authorize.loginid} balance: ${msg.authorize.balance} ${msg.authorize.currency}`);
+      state.balance = msg.authorize.balance;
+      state.currency = msg.authorize.currency;
+      // Load candle history
+      ws.send(JSON.stringify({ ticks_history: CONFIG.symbol, end: 'latest', count: 100, style: 'candles', granularity: 60 }));
+      ws.send(JSON.stringify({ balance: 1, subscribe: 1 }));
+    }
+
     if (msg.msg_type === 'candles') {
       state.candles = msg.candles.map(c => ({ close: parseFloat(c.close) }));
-      log(`${state.candles.length} candles loaded`);
+      log(`${state.candles.length} candles loaded ✓`);
       ws.send(JSON.stringify({ ticks: CONFIG.symbol, subscribe: 1 }));
     }
     if (msg.msg_type === 'ohlc') {
@@ -227,21 +191,10 @@ function startBot(wsUrl) {
   ws.on('close', (code) => {
     log(`WS closed (${code}), reconnecting in 15s...`, 'warn');
     state.active = false; state.contractId = null;
-    setTimeout(connect, 15000);
+    setTimeout(startBot, 15000);
   });
 
   setInterval(pushLogsToGitHub, 120000);
 }
 
-async function connect() {
-  log('Getting OTP from api.derivws.com...');
-  try {
-    const wsUrl = await getWsUrl();
-    startBot(wsUrl);
-  } catch(e) {
-    log(`Connect error: ${e.message}`, 'error');
-    setTimeout(connect, 30000);
-  }
-}
-
-connect();
+startBot();
