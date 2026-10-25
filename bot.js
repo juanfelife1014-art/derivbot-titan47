@@ -114,7 +114,7 @@ function getSignal() {
 }
 
 function startBot() {
-  const wsUrl = `wss://ws.binaryws.com/websockets/v3?app_id=${CONFIG.appId}`;
+  const wsUrl = `wss://ws.derivws.com/websockets/v3?app_id=${CONFIG.appId}`;
   log(`Connecting to Deriv WS: ${wsUrl}`);
   const ws = new WebSocket(wsUrl);
 
