@@ -28,18 +28,19 @@ function log(msg, type = 'info') {
   console.log(`[${ts}][${type.toUpperCase()}] ${msg}`);
 }
 
-// HTTP server para Render
-const PORT = process.env.PORT || 3000;
+// HTTP server para Render health check
+const PORT = process.env.PORT || 10000;
 http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify({
-    status: 'running', balance: state.balance,
+    status: 'running', balance: state.balance, currency: state.currency,
     wins: state.wins, losses: state.losses, pnl: state.pnl,
-    candles: state.candles.length, logs: state.logs.slice(0, 10),
+    candles: state.candles.length, logs: state.logs.slice(0, 20),
   }));
 }).listen(PORT, () => log(`HTTP server on port ${PORT}`));
 
 function pushLogsToGitHub() {
+  if (!CONFIG.githubToken) return;
   const data = {
     updated: new Date().toISOString(), balance: state.balance,
     currency: state.currency, wins: state.wins, losses: state.losses,
@@ -76,26 +77,49 @@ function pushLogsToGitHub() {
   getReq.end();
 }
 
-function getOTP() {
+function apiRequest(opts, postData) {
   return new Promise((resolve, reject) => {
-    // Use Deriv WebSocket directly with token (simpler, no REST OTP needed)
-    // Connect to standard WS with token auth
-    const wsUrl = `wss://ws.derivws.com/websockets/v3?app_id=${CONFIG.appId}`;
-    log(`Trying WS: ${wsUrl}`);
-    const ws = new WebSocket(wsUrl);
-    ws.on('open', () => {
-      ws.send(JSON.stringify({ authorize: CONFIG.token }));
+    const req = https.request(opts, (res) => {
+      let body = '';
+      res.on('data', d => body += d);
+      res.on('end', () => {
+        log(`API ${opts.path} status:${res.statusCode} body:${body.slice(0,200)}`);
+        try { resolve(JSON.parse(body)); }
+        catch(e) { reject(new Error(`JSON parse fail: ${body.slice(0,100)}`)); }
+      });
     });
-    ws.on('message', (data) => {
-      const msg = JSON.parse(data);
-      if (msg.msg_type === 'authorize') {
-        if (msg.error) { ws.close(); reject(new Error(msg.error.message)); }
-        else { log(`Authorized: ${msg.authorize.loginid}`); ws.close(); resolve(wsUrl); }
-      }
-    });
-    ws.on('error', (e) => reject(e));
-    setTimeout(() => reject(new Error('WS timeout')), 10000);
+    req.on('error', reject);
+    if (postData) req.write(postData);
+    req.end();
   });
+}
+
+async function getWsUrl() {
+  const headers = {
+    'Authorization': `Bearer ${CONFIG.token}`,
+    'X-App-ID': CONFIG.appId,
+    'Accept': 'application/json',
+    'User-Agent': 'DerivBot-Titan47',
+  };
+
+  // Step 1: GET accounts
+  const accounts = await apiRequest({
+    hostname: 'api.derivws.com', path: '/accounts', method: 'GET', headers,
+  });
+
+  if (!Array.isArray(accounts) || !accounts.length) throw new Error(`Bad accounts: ${JSON.stringify(accounts)}`);
+  const accountId = accounts[0].id;
+  log(`Account: ${accountId}`);
+
+  // Step 2: POST OTP
+  const otpResp = await apiRequest({
+    hostname: 'api.derivws.com', path: `/accounts/${accountId}/otp`, method: 'POST',
+    headers: { ...headers, 'Content-Length': 0 },
+  });
+
+  if (!otpResp.ws_url) throw new Error(`No ws_url in OTP response: ${JSON.stringify(otpResp)}`);
+  log(`WS URL: ${otpResp.ws_url}`);
+  return otpResp.ws_url;
 }
 
 function ema(arr, period) {
@@ -135,22 +159,19 @@ function getSignal() {
 }
 
 function startBot(wsUrl) {
-  log('Starting bot...');
+  log(`Connecting WS: ${wsUrl}`);
   const ws = new WebSocket(wsUrl);
+
   ws.on('open', () => {
-    log('WS connected');
-    ws.send(JSON.stringify({ authorize: CONFIG.token }));
+    log('WS connected ✓');
+    ws.send(JSON.stringify({ ticks_history: CONFIG.symbol, end: 'latest', count: 100, style: 'candles', granularity: 60 }));
+    ws.send(JSON.stringify({ balance: 1, subscribe: 1 }));
   });
+
   ws.on('message', (data) => {
     const msg = JSON.parse(data);
-    if (msg.msg_type === 'authorize') {
-      if (msg.error) { log(`Auth error: ${msg.error.message}`, 'error'); return; }
-      log(`Authorized: ${msg.authorize.loginid} bal:${msg.authorize.balance}`);
-      state.balance = msg.authorize.balance;
-      state.currency = msg.authorize.currency;
-      ws.send(JSON.stringify({ ticks_history: CONFIG.symbol, end: 'latest', count: 100, style: 'candles', granularity: 60 }));
-      ws.send(JSON.stringify({ balance: 1, subscribe: 1 }));
-    }
+    if (msg.error) { log(`API error: ${msg.error.message}`, 'error'); return; }
+
     if (msg.msg_type === 'candles') {
       state.candles = msg.candles.map(c => ({ close: parseFloat(c.close) }));
       log(`${state.candles.length} candles loaded`);
@@ -167,14 +188,22 @@ function startBot(wsUrl) {
         const signal = getSignal();
         if (signal) {
           state.active = true;
-          log(`Signal: ${signal}`, 'info');
-          ws.send(JSON.stringify({ buy: 1, price: CONFIG.stake, parameters: { contract_type: signal, symbol: CONFIG.symbol, duration: CONFIG.duration, duration_unit: CONFIG.durationUnit, basis: 'stake', amount: CONFIG.stake, currency: state.currency } }));
+          log(`Signal: ${signal} → buying`);
+          ws.send(JSON.stringify({ buy: 1, price: CONFIG.stake, parameters: {
+            contract_type: signal, symbol: CONFIG.symbol,
+            duration: CONFIG.duration, duration_unit: CONFIG.durationUnit,
+            basis: 'stake', amount: CONFIG.stake, currency: state.currency || 'USD',
+          }}));
         }
       }
     }
     if (msg.msg_type === 'buy') {
       if (msg.error) { log(`Buy error: ${msg.error.message}`, 'error'); state.active = false; }
-      else { state.contractId = msg.buy.contract_id; log(`Contract ${state.contractId}`); ws.send(JSON.stringify({ proposal_open_contract: 1, contract_id: state.contractId, subscribe: 1 })); }
+      else {
+        state.contractId = msg.buy.contract_id;
+        log(`Contract ${state.contractId} open`);
+        ws.send(JSON.stringify({ proposal_open_contract: 1, contract_id: state.contractId, subscribe: 1 }));
+      }
     }
     if (msg.msg_type === 'proposal_open_contract') {
       const c = msg.proposal_open_contract;
@@ -187,17 +216,27 @@ function startBot(wsUrl) {
         if ((state.wins + state.losses) % 5 === 0) pushLogsToGitHub();
       }
     }
-    if (msg.msg_type === 'balance') { state.balance = msg.balance.balance; state.currency = msg.balance.currency; }
+    if (msg.msg_type === 'balance') {
+      state.balance = msg.balance.balance;
+      state.currency = msg.balance.currency;
+      log(`Balance: ${state.balance} ${state.currency}`);
+    }
   });
+
   ws.on('error', e => log(`WS error: ${e.message}`, 'error'));
-  ws.on('close', () => { log('WS closed, reconnecting...', 'warn'); state.active = false; state.contractId = null; setTimeout(() => startBot(wsUrl), 10000); });
+  ws.on('close', (code) => {
+    log(`WS closed (${code}), reconnecting in 15s...`, 'warn');
+    state.active = false; state.contractId = null;
+    setTimeout(connect, 15000);
+  });
+
   setInterval(pushLogsToGitHub, 120000);
 }
 
 async function connect() {
-  log('Connecting to Deriv...');
+  log('Getting OTP from api.derivws.com...');
   try {
-    const wsUrl = await getOTP();
+    const wsUrl = await getWsUrl();
     startBot(wsUrl);
   } catch(e) {
     log(`Connect error: ${e.message}`, 'error');
