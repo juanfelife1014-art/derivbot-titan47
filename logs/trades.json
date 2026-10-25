@@ -1,11 +1,31 @@
 {
-  "updated": "2026-10-25T09:18:24.490Z",
+  "updated": "2026-10-25T09:18:45.257Z",
   "balance": 0,
   "currency": "USD",
   "wins": 0,
   "losses": 0,
   "pnl": 0,
   "logs": [
+    {
+      "ts": "2026-10-25T09:18:33.702Z",
+      "msg": "WS closed (1006), reconnecting in 15s...",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-25T09:18:33.702Z",
+      "msg": "WS error: Unexpected server response: 520",
+      "type": "error"
+    },
+    {
+      "ts": "2026-10-25T09:18:28.276Z",
+      "msg": "Connecting to Deriv WS: wss://ws.binaryws.com/websockets/v3?app_id=34EVWNMv7KoS85SXXkkSR",
+      "type": "info"
+    },
+    {
+      "ts": "2026-10-25T09:18:25.657Z",
+      "msg": "Logs → GitHub OK",
+      "type": "info"
+    },
     {
       "ts": "2026-10-25T09:18:13.274Z",
       "msg": "WS closed (1006), reconnecting in 15s...",
