@@ -1158,8 +1158,10 @@ function execTrade(dir){
   S.trades.unshift(trade);S.opsSession++;
   S.pendingBuy.push(trade);
   addTradeUI(trade);upStats();updateRiskUI();
-  wsSend({buy:1,price:stake*2,parameters:{amount:stake,basis:'stake',contract_type:dir,currency:S.currency,duration:dur,duration_unit:durU,symbol:S.sym}});
-  log(`→ ${dir} $${stake} · ${dur}${durU} @ ${S.lastP.toFixed(2)}`,'info');
+  const buyMsg={buy:1,price:stake,parameters:{amount:stake,basis:'stake',contract_type:dir,currency:S.currency,duration:dur,duration_unit:durU,symbol:S.sym}};
+  log(`→ ${dir} $${stake} · ${dur}${durU} sym:${S.sym} cur:${S.currency}`,'info');
+  log('BUY MSG: '+JSON.stringify(buyMsg),'info');
+  wsSend(buyMsg);
   soundAlert(dir==='CALL'?'call':'put');doFlash(dir==='CALL'?'call-f':'put-f');
 }
 function onBuy(d){
