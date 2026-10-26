@@ -923,6 +923,7 @@ function onMsg(m){
   else if(t==='candles')onCandles(m.candles);
   else if(t==='ohlc')onOhlc(m.ohlc);
   else if(t==='tick'&&m.tick)updateP(parseFloat(m.tick.quote));
+  else if(t==='proposal')onProposal(m.proposal,m.error);
   else if(t==='buy')onBuy(m.buy);
   else if(t==='proposal_open_contract')onPOC(m.proposal_open_contract);
 }
@@ -1109,11 +1110,18 @@ function execTrade(dir){
   S.trades.unshift(trade);S.opsSession++;
   S.pendingBuy.push(trade);
   addTradeUI(trade);upStats();updateRiskUI();
-  const buyMsg={buy:1,price:stake,parameters:{amount:stake,basis:'stake',contract_type:dir,currency:S.currency,duration:dur,duration_unit:durU,symbol:S.sym}};
-  log(`→ ${dir} $${stake} · ${dur}${durU} sym:${S.sym} cur:${S.currency}`,'info');
-  log('BUY MSG: '+JSON.stringify(buyMsg),'info');
-  wsSend(buyMsg);
+  log(`→ ${dir} $${stake} · ${dur}${durU} sym:${S.sym}`,'info');
+  // Paso 1: pedir proposal, luego comprar con el ID
+  const propMsg={proposal:1,amount:stake,basis:'stake',contract_type:dir,currency:S.currency||'USD',duration:dur,duration_unit:durU,symbol:S.sym};
+  log('PROPOSAL: '+JSON.stringify(propMsg),'info');
+  S.pendingPropDir=dir;
+  wsSend(propMsg);
   soundAlert(dir==='CALL'?'call':'put');doFlash(dir==='CALL'?'call-f':'put-f');
+}
+function onProposal(d,err){
+  if(err||!d||!d.id){log('❌ Proposal error: '+(err?err.message:JSON.stringify(d)),'err');S.pendingBuy.shift();return;}
+  log(`✓ Proposal ID:${d.id} ask:${d.ask_price}`,'ok');
+  wsSend({buy:d.id,price:d.ask_price});
 }
 function onBuy(d){
   if(!d||d.error){log('Error buy: '+(d&&d.error?d.error.message:'?'),'err');S.pendingBuy.shift();return;}
