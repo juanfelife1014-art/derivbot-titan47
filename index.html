@@ -1124,7 +1124,8 @@ function onProposal(d,err){
     S.pendingBuy.shift();return;
   }
   const price=parseFloat(d.ask_price);
-  log(`✓ Proposal ID:${d.id} ask:${price}`,'ok');
+  log(`✓ Proposal OK id=${d.id} ask=${price} payout=${d.payout}`,'ok');
+  log('BUY→ '+JSON.stringify({buy:d.id,price:price}),'info');
   wsSend({buy:d.id,price:price});
 }
 function onBuy(d,err){
