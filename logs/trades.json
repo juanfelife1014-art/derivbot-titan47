@@ -1,11 +1,26 @@
 {
-  "updated": "2026-10-26T14:53:28.350Z",
+  "updated": "2026-10-26T14:53:30.376Z",
   "balance": 0,
   "currency": "USD",
   "wins": 0,
   "losses": 0,
   "pnl": 0,
   "logs": [
+    {
+      "ts": "2026-10-26T14:53:29.709Z",
+      "msg": "GitHub push 409",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T14:53:29.549Z",
+      "msg": "Logs → GitHub OK",
+      "type": "info"
+    },
+    {
+      "ts": "2026-10-26T14:53:28.952Z",
+      "msg": "Connecting to Deriv WS: wss://ws.derivws.com/websockets/v3?app_id=34EVWNMv7KoS85SXXkkSR",
+      "type": "info"
+    },
     {
       "ts": "2026-10-26T14:53:27.192Z",
       "msg": "GitHub push 409",
@@ -488,21 +503,6 @@
     },
     {
       "ts": "2026-10-26T14:52:02.116Z",
-      "msg": "Logs → GitHub OK",
-      "type": "info"
-    },
-    {
-      "ts": "2026-10-26T14:52:00.493Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T14:52:00.188Z",
-      "msg": "Logs → GitHub OK",
-      "type": "info"
-    },
-    {
-      "ts": "2026-10-26T14:51:59.021Z",
       "msg": "Logs → GitHub OK",
       "type": "info"
     }
