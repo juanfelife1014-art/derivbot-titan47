@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DerivBot ProMax — Titan47 LIVE v2.1</title>
+<title>DerivBot ProMax — Titan47 LIVE v2.2</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -866,7 +866,7 @@ function tryConnect(urls,idx){
     const btn=document.getElementById('btnConnect');if(btn)btn.disabled=false;
     return;
   }
-  const numericAppId=36544; // Deriv API Explorer app_id (compatible con trading)
+  const numericAppId=1089; // app_id estándar Deriv (funciona para conexión WS + proposal→buy)
   const url=`${urls[idx]}?app_id=${numericAppId}`;
   log(`Intentando ${url.split('?')[0]}...`,'info');
   setLoginStatus('ing',`⏳ Probando servidor ${idx+1}/${urls.length}...`);
