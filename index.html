@@ -786,58 +786,9 @@ function doConnect(){
 }
 
 async function fetchAccountsThenConnect(){
-  // PASO 1: obtener lista de cuentas de opciones
-  const BASE='https://api.derivws.com/trading/v1/options';
-  const hdrs={'Authorization':'Bearer '+S.token,'Deriv-App-ID':String(S.appId)};
-  try{
-    const res=await fetch(BASE+'/accounts',{headers:hdrs});
-    const raw=await res.text();
-    setLoginDetail('GET /accounts HTTP '+res.status+' → '+raw.slice(0,300));
-    log('GET /accounts HTTP '+res.status+': '+raw.slice(0,200), res.ok?'ok':'warn');
-    if(res.ok){
-      const j=JSON.parse(raw);
-      // La respuesta puede ser array directo o {data:[...]}
-      const list=Array.isArray(j)?j:(Array.isArray(j?.data)?j.data:[j?.data]);
-      // Preferir cuenta demo; si no hay, tomar la primera
-      const demo=list.find(a=>a&&(a.type==='demo'||a.account_type==='demo'));
-      const acct=demo||list[0];
-      if(acct&&(acct.id||acct.account_id)){
-        S.accountId=acct.id||acct.account_id;
-        const wrap=document.getElementById('accIdWrap');
-        if(wrap){wrap.style.display='block';document.getElementById('accountId').value=S.accountId;}
-        log('✓ Account ID obtenido: '+S.accountId,'ok');
-        setLoginStatus('ing','⏳ Paso 2/3 · Obteniendo OTP...');
-        fetchOTPandConnect();
-        return;
-      }
-      // Si la respuesta fue ok pero sin ID esperado, mostrar raw
-      setLoginDetail('Respuesta /accounts OK pero sin account_id. Raw: '+raw.slice(0,400));
-    }
-    // Si falla, intentar con el ID del campo manual
-    const manual=document.getElementById('accountId').value.trim();
-    if(manual){
-      S.accountId=manual;
-      setLoginStatus('ing','⏳ Usando ID manual · Obteniendo OTP...');
-      fetchOTPandConnect();
-    } else {
-      setLoginStatus('err','❌ No se pudo obtener Account ID (HTTP '+res.status+') — revisa el token');
-      setLoginDetail('Error /accounts: '+raw.slice(0,500));
-      const btn=document.getElementById('btnConnect');if(btn)btn.disabled=false;
-    }
-  }catch(e){
-    const manual=document.getElementById('accountId').value.trim();
-    setLoginDetail('Error al llamar /accounts: '+e.message+(manual?' · usando ID manual: '+manual:''));
-    log('❌ Error /accounts: '+e.message,'err');
-    if(manual){
-      S.accountId=manual;
-      setLoginStatus('ing','⏳ Usando ID manual · Obteniendo OTP...');
-      fetchOTPandConnect();
-    } else {
-      // Sin account ID — intentar legacy WS
-      setLoginStatus('ing','⏳ Sin account ID · probando conexión clásica...');
-      connectLegacy();
-    }
-  }
+  // Conexión directa por WebSocket — más confiable que la REST API
+  setLoginStatus('ing','⏳ Conectando vía WebSocket...');
+  connectLegacy();
 }
 
 async function fetchOTPandConnect(){
