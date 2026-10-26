@@ -1,11 +1,116 @@
 {
-  "updated": "2026-10-26T23:02:46.003Z",
+  "updated": "2026-10-26T23:02:47.577Z",
   "balance": 0,
   "currency": "USD",
   "wins": 0,
   "losses": 0,
   "pnl": 0,
   "logs": [
+    {
+      "ts": "2026-10-26T23:02:47.570Z",
+      "msg": "WS closed (1006), reconnecting in 15s...",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:47.570Z",
+      "msg": "WS error: Unexpected server response: 520",
+      "type": "error"
+    },
+    {
+      "ts": "2026-10-26T23:02:47.501Z",
+      "msg": "GitHub push 409",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:47.423Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:47.418Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:47.363Z",
+      "msg": "GitHub push 409",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:47.325Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:47.324Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:47.292Z",
+      "msg": "GitHub push 409",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:47.199Z",
+      "msg": "GitHub push 409",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:47.132Z",
+      "msg": "Logs → GitHub OK",
+      "type": "info"
+    },
+    {
+      "ts": "2026-10-26T23:02:47.120Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:46.785Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:46.764Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:46.621Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:46.606Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:46.391Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:46.346Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:46.240Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:46.202Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T23:02:46.080Z",
+      "msg": "GitHub push 403",
+      "type": "warn"
+    },
     {
       "ts": "2026-10-26T23:02:45.973Z",
       "msg": "GitHub push 403",
@@ -400,111 +505,6 @@
       "ts": "2026-10-26T23:02:40.354Z",
       "msg": "Logs → GitHub OK",
       "type": "info"
-    },
-    {
-      "ts": "2026-10-26T23:02:40.335Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:40.316Z",
-      "msg": "GitHub push 403",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:40.301Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:40.239Z",
-      "msg": "GitHub push 403",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.540Z",
-      "msg": "GitHub push 403",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.507Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.503Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.493Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.457Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.419Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.383Z",
-      "msg": "GitHub push 403",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.312Z",
-      "msg": "GitHub push 403",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.302Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.228Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.216Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.213Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.109Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.069Z",
-      "msg": "GitHub push 403",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.067Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:39.020Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T23:02:38.997Z",
-      "msg": "GitHub push 403",
-      "type": "warn"
     }
   ]
 }
