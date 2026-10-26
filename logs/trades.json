@@ -1,11 +1,16 @@
 {
-  "updated": "2026-10-26T14:49:25.882Z",
+  "updated": "2026-10-26T14:49:28.350Z",
   "balance": 0,
   "currency": "USD",
   "wins": 0,
   "losses": 0,
   "pnl": 0,
   "logs": [
+    {
+      "ts": "2026-10-26T14:49:27.089Z",
+      "msg": "Logs → GitHub OK",
+      "type": "info"
+    },
     {
       "ts": "2026-10-26T14:49:24.704Z",
       "msg": "Logs → GitHub OK",
@@ -500,11 +505,6 @@
       "ts": "2026-10-26T14:47:50.712Z",
       "msg": "Logs → GitHub OK",
       "type": "info"
-    },
-    {
-      "ts": "2026-10-26T14:47:50.063Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
     }
   ]
 }
