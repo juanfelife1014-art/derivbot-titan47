@@ -1,11 +1,21 @@
 {
-  "updated": "2026-10-26T14:51:11.917Z",
+  "updated": "2026-10-26T14:51:13.994Z",
   "balance": 0,
   "currency": "USD",
   "wins": 0,
   "losses": 0,
   "pnl": 0,
   "logs": [
+    {
+      "ts": "2026-10-26T14:51:13.281Z",
+      "msg": "GitHub push 409",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T14:51:13.279Z",
+      "msg": "Logs → GitHub OK",
+      "type": "info"
+    },
     {
       "ts": "2026-10-26T14:51:11.698Z",
       "msg": "WS closed (1006), reconnecting in 15s...",
@@ -493,16 +503,6 @@
     },
     {
       "ts": "2026-10-26T14:49:42.897Z",
-      "msg": "Logs → GitHub OK",
-      "type": "info"
-    },
-    {
-      "ts": "2026-10-26T14:49:41.595Z",
-      "msg": "Logs → GitHub OK",
-      "type": "info"
-    },
-    {
-      "ts": "2026-10-26T14:49:40.593Z",
       "msg": "Logs → GitHub OK",
       "type": "info"
     }
