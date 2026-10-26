@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DerivBot ProMax — Titan47 LIVE v2.2</title>
+<title>DerivBot ProMax — Titan47 LIVE v2.3</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -875,7 +875,7 @@ function tryConnect(urls,idx){
     try{ws.close();}catch(e){}
     log(`Timeout en ${urls[idx]} — probando siguiente...`,'warn');
     tryConnect(urls,idx+1);
-  },6000);
+  },15000);
   ws.onopen=()=>{
     clearTimeout(timer);
     S.ws=ws;
