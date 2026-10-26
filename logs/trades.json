@@ -1,11 +1,16 @@
 {
-  "updated": "2026-10-26T14:34:20.017Z",
+  "updated": "2026-10-26T14:34:22.468Z",
   "balance": 0,
   "currency": "USD",
   "wins": 0,
   "losses": 0,
   "pnl": 0,
   "logs": [
+    {
+      "ts": "2026-10-26T14:34:21.648Z",
+      "msg": "Logs → GitHub OK",
+      "type": "info"
+    },
     {
       "ts": "2026-10-26T14:34:19.507Z",
       "msg": "Logs → GitHub OK",
@@ -500,11 +505,6 @@
       "ts": "2026-10-26T14:31:51.975Z",
       "msg": "WS error: Unexpected server response: 520",
       "type": "error"
-    },
-    {
-      "ts": "2026-10-26T14:31:50.446Z",
-      "msg": "Logs → GitHub OK",
-      "type": "info"
     }
   ]
 }
