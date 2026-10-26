@@ -1158,7 +1158,7 @@ function execTrade(dir){
   S.trades.unshift(trade);S.opsSession++;
   S.pendingBuy.push(trade);
   addTradeUI(trade);upStats();updateRiskUI();
-  wsSend({buy:'1',price:stake*10,parameters:{amount:stake,basis:'stake',contract_type:dir,currency:S.currency,duration:dur,duration_unit:durU,symbol:S.sym}});
+  wsSend({buy:1,price:stake,parameters:{amount:stake,basis:'stake',contract_type:dir,currency:S.currency,duration:dur,duration_unit:durU,symbol:S.sym}});
   log(`→ ${dir} $${stake} · ${dur}${durU} @ ${S.lastP.toFixed(2)}`,'info');
   soundAlert(dir==='CALL'?'call':'put');doFlash(dir==='CALL'?'call-f':'put-f');
 }
