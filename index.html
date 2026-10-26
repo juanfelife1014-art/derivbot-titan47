@@ -909,22 +909,22 @@ function tryConnect(urls,idx){
 }
 function wsSend(m){if(S.ws&&S.ws.readyState===1){m.req_id=S.reqId++;S.ws.send(JSON.stringify(m));}}
 function onMsg(m){
-  if(m.error&&m.msg_type!=='proposal'){
-    log('❌ '+m.error.message,'err');
-    if(m.msg_type==='authorize'){
+  const t=m.msg_type;
+  if(m.error&&t!=='proposal'&&t!=='buy'){
+    log('❌ ['+t+'] '+m.error.message,'err');
+    if(t==='authorize'){
       setLoginStatus('err','❌ '+m.error.message);
       const btn=document.getElementById('btnConnect');if(btn)btn.disabled=false;
     }
     return;
   }
-  const t=m.msg_type;
   if(t==='authorize')onAuth(m.authorize);
   else if(t==='balance')onBal(m.balance);
   else if(t==='candles')onCandles(m.candles);
   else if(t==='ohlc')onOhlc(m.ohlc);
   else if(t==='tick'&&m.tick)updateP(parseFloat(m.tick.quote));
   else if(t==='proposal')onProposal(m.proposal,m.error);
-  else if(t==='buy')onBuy(m.buy);
+  else if(t==='buy')onBuy(m.buy,m.error);
   else if(t==='proposal_open_contract')onPOC(m.proposal_open_contract);
 }
 function onAuth(d){
@@ -1119,12 +1119,19 @@ function execTrade(dir){
   soundAlert(dir==='CALL'?'call':'put');doFlash(dir==='CALL'?'call-f':'put-f');
 }
 function onProposal(d,err){
-  if(err||!d||!d.id){log('❌ Proposal error: '+(err?err.message:JSON.stringify(d)),'err');S.pendingBuy.shift();return;}
-  log(`✓ Proposal ID:${d.id} ask:${d.ask_price}`,'ok');
-  wsSend({buy:d.id,price:d.ask_price});
+  if(err||!d||!d.id){
+    log('❌ Proposal error: '+(err?err.message:JSON.stringify(d)),'err');
+    S.pendingBuy.shift();return;
+  }
+  const price=parseFloat(d.ask_price);
+  log(`✓ Proposal ID:${d.id} ask:${price}`,'ok');
+  wsSend({buy:d.id,price:price});
 }
-function onBuy(d){
-  if(!d||d.error){log('Error buy: '+(d&&d.error?d.error.message:'?'),'err');S.pendingBuy.shift();return;}
+function onBuy(d,err){
+  if(err||!d){
+    log('❌ Buy error: '+(err?err.message:(d?JSON.stringify(d):'sin respuesta')),'err');
+    S.pendingBuy.shift();return;
+  }
   const trade=S.pendingBuy.shift();if(!trade)return;
   trade.contractId=d.contract_id;S.openC[d.contract_id]=trade;
   log(`✓ Contrato #${d.contract_id}`,'ok');updateRiskUI();
