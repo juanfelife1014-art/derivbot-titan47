@@ -1,11 +1,26 @@
 {
-  "updated": "2026-10-26T16:03:59.008Z",
+  "updated": "2026-10-26T16:04:00.006Z",
   "balance": 0,
   "currency": "USD",
   "wins": 0,
   "losses": 0,
   "pnl": 0,
   "logs": [
+    {
+      "ts": "2026-10-26T16:03:59.286Z",
+      "msg": "GitHub push 409",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T16:03:59.106Z",
+      "msg": "GitHub push 409",
+      "type": "warn"
+    },
+    {
+      "ts": "2026-10-26T16:03:59.050Z",
+      "msg": "GitHub push 409",
+      "type": "warn"
+    },
     {
       "ts": "2026-10-26T16:03:58.858Z",
       "msg": "Logs → GitHub OK",
@@ -489,21 +504,6 @@
     {
       "ts": "2026-10-26T16:03:25.312Z",
       "msg": "WS closed (1006), reconnecting in 15s...",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T16:03:25.312Z",
-      "msg": "WS error: Unexpected server response: 520",
-      "type": "error"
-    },
-    {
-      "ts": "2026-10-26T16:03:24.825Z",
-      "msg": "GitHub push 409",
-      "type": "warn"
-    },
-    {
-      "ts": "2026-10-26T16:03:24.729Z",
-      "msg": "GitHub push 409",
       "type": "warn"
     }
   ]
