@@ -1,11 +1,16 @@
 {
-  "updated": "2026-10-26T14:20:49.778Z",
+  "updated": "2026-10-26T14:20:51.572Z",
   "balance": 0,
   "currency": "USD",
   "wins": 0,
   "losses": 0,
   "pnl": 0,
   "logs": [
+    {
+      "ts": "2026-10-26T14:20:50.988Z",
+      "msg": "Logs → GitHub OK",
+      "type": "info"
+    },
     {
       "ts": "2026-10-26T14:20:48.827Z",
       "msg": "Logs → GitHub OK",
@@ -499,11 +504,6 @@
     {
       "ts": "2026-10-26T14:14:49.774Z",
       "msg": "Connecting to Deriv WS: wss://ws.derivws.com/websockets/v3?app_id=34EVWNMv7KoS85SXXkkSR",
-      "type": "info"
-    },
-    {
-      "ts": "2026-10-26T14:14:48.917Z",
-      "msg": "Logs → GitHub OK",
       "type": "info"
     }
   ]
