@@ -1,11 +1,16 @@
 {
-  "updated": "2026-10-28T04:09:48.731Z",
+  "updated": "2026-10-28T04:09:50.293Z",
   "balance": 0,
   "currency": "USD",
   "wins": 0,
   "losses": 0,
   "pnl": 0,
   "logs": [
+    {
+      "ts": "2026-10-28T04:09:50.011Z",
+      "msg": "Logs → GitHub OK",
+      "type": "info"
+    },
     {
       "ts": "2026-10-28T04:09:47.693Z",
       "msg": "Logs → GitHub OK",
@@ -500,11 +505,6 @@
       "ts": "2026-10-28T04:03:33.723Z",
       "msg": "WS error: Unexpected server response: 520",
       "type": "error"
-    },
-    {
-      "ts": "2026-10-28T04:03:27.934Z",
-      "msg": "Connecting to Deriv WS: wss://ws.derivws.com/websockets/v3?app_id=34EVWNMv7KoS85SXXkkSR",
-      "type": "info"
     }
   ]
 }
